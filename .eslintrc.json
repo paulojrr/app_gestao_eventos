@@ -18,7 +18,8 @@
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
     "no-console": "off",
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "no-useless-constructor": "off"
   },
   "settings": {
     "import/resolver": {
