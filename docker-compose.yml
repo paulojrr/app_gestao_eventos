@@ -8,18 +8,18 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    network_mode: host
+    ports:
+      - 5432:5432
+
     volumes:
       - pgdata:/var/lib/postgresql/data/
 
-  app:
-    container_name: app_gestao
-    restart: always
-    network_mode: host
-    build: .
-    volumes:
-      - .:/usr/app
-    command: npm run dev
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025
 
 volumes:
   pgdata:
