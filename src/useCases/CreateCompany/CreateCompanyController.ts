@@ -17,7 +17,6 @@ export class CreateCompanyController {
 
       return response.status(200).json(company);
     } catch (err) {
-      console.log(err);
       return response.status(400).json({ error: err.message });
     }
   }
