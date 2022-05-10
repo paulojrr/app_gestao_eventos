@@ -1,14 +1,18 @@
+import { inject, injectable } from 'tsyringe';
 import { Company } from '../../entities/Company';
 import { IMailProvider } from '../../providers/IMailProvider';
-import { PostgressCompanyRepository } from '../../repositories/implementations/PostgresCompanyRepository';
+import { ICompanyRepository } from '../../repositories/ICompanyRepository';
 import {
   IRequestCreateCompany,
   IResponseCreateCompany,
 } from './CreateCompanyDTO';
 
+@injectable()
 export class CreateCompanyUseCase {
   constructor(
-    private companyRepository: PostgressCompanyRepository,
+    @inject('CompanyRepository')
+    private companyRepository: ICompanyRepository,
+    @inject('MailHogMailProvider')
     private mailProvider: IMailProvider
   ) {}
 
@@ -35,6 +39,8 @@ export class CreateCompanyUseCase {
 
     const company = await this.companyRepository.create(data);
 
+    const token = await Company.generateToken(company.id);
+
     this.mailProvider.sendMail({
       to: {
         name: data.name,
@@ -45,7 +51,7 @@ export class CreateCompanyUseCase {
         email: 'gestaoeventos@gestaoeventos.com',
       },
       subject: 'Seja bem-vindo á plataforma',
-      body: 'Você já pode realizar o acesso a plataforma',
+      body: `Para realizar a confirmação da conta, click no no link ${token}`,
     });
 
     return company;

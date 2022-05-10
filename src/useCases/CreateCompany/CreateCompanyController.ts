@@ -1,14 +1,15 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 import { CreateCompanyUseCase } from './CreateCompanyUseCase';
 
 export class CreateCompanyController {
-  constructor(private createCompanyUseCase: CreateCompanyUseCase) {}
-
   public async handle(request: Request, response: Response) {
     const { name, cnpj, email, password } = request.body;
 
+    const createCompanyUseCase = container.resolve(CreateCompanyUseCase);
+
     try {
-      const company = await this.createCompanyUseCase.execute({
+      const company = await createCompanyUseCase.execute({
         name,
         cnpj,
         email,
@@ -17,6 +18,7 @@ export class CreateCompanyController {
 
       return response.status(200).json(company);
     } catch (err) {
+      console.log(err);
       return response.status(400).json({ error: err.message });
     }
   }
