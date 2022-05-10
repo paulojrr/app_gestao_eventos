@@ -1,5 +1,7 @@
 import express from 'express';
+import 'reflect-metadata';
 import { router } from './routes';
+import './shared/container';
 
 const server = express();
 
