@@ -29,6 +29,10 @@ export class CreateCompanyUseCase {
       throw new Error('CNPJ already exists');
     }
 
+    const hashedPassword = await Company.hashPassword(data.password);
+
+    data.password = hashedPassword;
+
     const company = await this.companyRepository.create(data);
 
     this.mailProvider.sendMail({
