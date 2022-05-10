@@ -1,15 +1,13 @@
-import { PrismaClient } from '@prisma/client';
+import { prismaClient } from '../../prisma';
 import {
   IRequestCreateCompany,
   IResponseCreateCompany,
 } from '../../useCases/CreateCompany/CreateCompanyDTO';
 import { ICompanyRepository } from '../ICompanyRepository';
 
-export class PostgressCompanyRepository implements ICompanyRepository {
-  constructor(private readonly prisma: PrismaClient) {}
-
+export class PostgresCompanyRepository implements ICompanyRepository {
   async findByEmail(email: string): Promise<IResponseCreateCompany | null> {
-    const company = await this.prisma.company.findUnique({
+    const company = await prismaClient.company.findUnique({
       where: {
         email,
       },
@@ -19,7 +17,7 @@ export class PostgressCompanyRepository implements ICompanyRepository {
   }
 
   async findByCNPJ(cnpj: string): Promise<IResponseCreateCompany | null> {
-    const company = await this.prisma.company.findUnique({
+    const company = await prismaClient.company.findUnique({
       where: {
         cnpj,
       },
@@ -38,7 +36,7 @@ export class PostgressCompanyRepository implements ICompanyRepository {
   }
 
   async create(data: IRequestCreateCompany): Promise<IResponseCreateCompany> {
-    const company = await this.prisma.company.create({
+    const company = await prismaClient.company.create({
       data: {
         name: data.name,
         cnpj: data.cnpj,
