@@ -1,3 +1,4 @@
+import { hash } from 'bcrypt';
 import crypto from 'crypto';
 import { CompanyValidations } from './validations/CompanyValidations';
 
@@ -41,5 +42,11 @@ export class Company {
     }
 
     return true;
+  }
+
+  static async hashPassword(password: string): Promise<string> {
+    const hashedPassword = await hash(password, 10);
+
+    return hashedPassword;
   }
 }
