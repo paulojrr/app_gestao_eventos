@@ -1,15 +1,9 @@
 import { container } from 'tsyringe';
-import { IMailProvider } from '../../providers/IMailProvider';
-import { MailHogMailProvider } from '../../providers/implementations/MailHogMailProvider';
-import { ICompanyRepository } from '../../repositories/ICompanyRepository';
-import { PostgresCompanyRepository } from '../../repositories/implementations/PostgresCompanyRepository';
+import { PostgresCompanyRepository } from '../../modules/account/infra/repositories/prisma/PostgresCompanyRepository';
+import { ICompanyRepository } from '../../modules/account/repositories/ICompanyRepository';
+import './providers/';
 
 container.registerSingleton<ICompanyRepository>(
   'CompanyRepository',
   PostgresCompanyRepository
-);
-
-container.registerSingleton<IMailProvider>(
-  'MailHogMailProvider',
-  MailHogMailProvider
 );
