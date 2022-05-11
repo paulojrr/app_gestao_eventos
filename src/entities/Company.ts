@@ -1,5 +1,7 @@
 import { hash } from 'bcrypt';
 import crypto from 'crypto';
+import { sign } from 'jsonwebtoken';
+import { auth } from '../config/auth';
 import { CompanyValidations } from './validations/CompanyValidations';
 
 export class Company {
@@ -48,5 +50,14 @@ export class Company {
     const hashedPassword = await hash(password, 10);
 
     return hashedPassword;
+  }
+
+  static async generateToken(id: string): Promise<string> {
+    const token = sign({}, auth.secret_token, {
+      subject: id,
+      expiresIn: auth.expiresIn,
+    });
+
+    return token;
   }
 }
